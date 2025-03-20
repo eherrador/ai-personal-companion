@@ -1,5 +1,6 @@
 from io import BytesIO
 
+import os
 import chainlit as cl
 from langchain_core.messages import AIMessageChunk, HumanMessage
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
@@ -50,6 +51,10 @@ async def on_message(message: cl.Message):
 
     # Process through graph with enriched message content
     thread_id = cl.user_session.get("thread_id")
+
+    current_dir = os.getcwd()
+    print(f"📂 El directorio actual es: {current_dir}")
+    print(f"El path es: {settings.SHORT_TERM_MEMORY_DB_PATH}")
 
     async with cl.Step(type="run"):
         async with AsyncSqliteSaver.from_conn_string(
